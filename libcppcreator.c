@@ -10,6 +10,7 @@ void checkParams(short * flag, int argc, char ** argv);
 void createFiles(short flag, int argc, char ** argv);
 void createConstructor(FILE * hpp, FILE * cpp, char * nom);
 void createDestructor(FILE * hpp, FILE * cpp, char * nom);
+void createIncludes(FILE * hpp);
 
 int main(int argc, char ** argv)
 {
@@ -102,8 +103,9 @@ void createFiles(short flag, int argc, char ** argv)
 				printf("%d\n", flag);
 
 				fprintf(cpp, "#include <%s.hpp>\n", nom);
-				fprintf(hpp, "#ifndef %s\n#define %s\n\nclass %s\n{\nprivate:\npublic:\n", gardien, gardien, nom);
-
+				fprintf(hpp, "#ifndef %s\n#define %s\n\n", gardien, gardien);
+				createIncludes(hpp);
+				fprintf(hpp, "\nclass %s\n{\nprivate:\npublic:\n", nom);
 				if (!(flag & F_CONSTRUCTOR)) createConstructor(hpp, cpp, nom);
 				if (!(flag & F_DESTRUCTOR)) createDestructor(hpp, cpp, nom);
 
@@ -116,6 +118,24 @@ void createFiles(short flag, int argc, char ** argv)
 	}
 }
 
+void createIncludes(FILE * hpp)
+{
+	char buffer[100];
+	printf("USER : %s\n", getenv("USER"));
+	#ifdef __WIN32__
+		sprintf(buffer, "%s/.libcreator", getenv("USERPROFILE"));
+	#else
+		sprintf(buffer, "%s/.libcreator", getenv("HOME"));
+	#endif
+	FILE * prop = fopen(buffer, "r");
+	if (prop)
+	{
+		while(fscanf(prop, "%s", buffer) != EOF)
+		{
+			fprintf(hpp, "#include <%s.hpp>\n", buffer);
+		}
+	}
+}
 
 void createConstructor(FILE * hpp, FILE * cpp, char * nom)
 {

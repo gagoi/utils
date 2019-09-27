@@ -80,9 +80,9 @@ void createFiles(short flag, int argc, char ** argv)
 	FILE * hpp = NULL;
 	FILE * cpp = NULL;
 
-	for (i = 1; i < argc; ++i)
+	for (i = 1; i < argc; ++i) // Pour chaque argument de lancement
 	{
-		if (argv[i][0] != '-')
+		if (argv[i][0] != '-') // Si c'est un paramêtre
 		{
 			// Ajout d'une majuscule au nom de la librairie.
 			strcpy(nom, argv[i]);
@@ -103,7 +103,7 @@ void createFiles(short flag, int argc, char ** argv)
 			hpp = fopen(buffer, "w");
 
 
-			if (cpp && hpp)
+			if (cpp && hpp) // Si les fichiers sont bien ouverts
 			{
 				fprintf(cpp, "#include <%s.hpp>\n", nom);
 				fprintf(hpp, "#ifndef %s\n#define %s\n\n", gardien, gardien);
@@ -114,6 +114,7 @@ void createFiles(short flag, int argc, char ** argv)
 
 				fprintf(hpp, "}\n\n#endif\n");
 
+				// Libération des pointeurs
 				fclose(cpp);
 				fclose(hpp);
 			}
@@ -124,19 +125,18 @@ void createFiles(short flag, int argc, char ** argv)
 void createIncludes(FILE * hpp)
 {
 	char buffer[100];
-	#ifdef __WIN32__
+
+	// On utilise les variables d'environnements pour accéder à l'emplacement du fichier de configuration
+	#ifdef __WIN32__ // Si on est sous windows on utilise userprofile
 		sprintf(buffer, "%s/.libcreator", getenv("USERPROFILE"));
-	#else
+	#else // Sinon on suppose l'utilisation de linux et on utilise home
 		sprintf(buffer, "%s/.libcreator", getenv("HOME"));
 	#endif
-	FILE * prop = fopen(buffer, "r");
-	if (prop)
-	{
-		while(fscanf(prop, "%s", buffer) != EOF)
-		{
-			fprintf(hpp, "#include <%s.hpp>\n", buffer);
-		}
-	}
+
+	FILE * prop = fopen(buffer, "r"); // Ouverture du fichier
+	if (prop) // Si il est ouvert
+		while(fscanf(prop, "%s", buffer) != EOF) // On le parcourt en entier
+			fprintf(hpp, "#include <%s.hpp>\n", buffer); // Pour ajouter le bon include au header
 }
 
 void createConstructor(FILE * hpp, FILE * cpp, char * nom)

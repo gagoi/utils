@@ -5,12 +5,14 @@
 
 #define F_CONSTRUCTOR (1 << 0)
 #define F_DESTRUCTOR (1 << 1)
+#define F_LIBRARIES (1 << 2)
 
 void checkParams(short * flag, int argc, char ** argv);
 void createFiles(short flag, int argc, char ** argv);
 void createConstructor(FILE * hpp, FILE * cpp, char * nom);
 void createDestructor(FILE * hpp, FILE * cpp, char * nom);
 void createIncludes(FILE * hpp);
+void printParams(short flag);
 
 int main(int argc, char ** argv)
 {
@@ -20,6 +22,7 @@ int main(int argc, char ** argv)
 	if (argc > 1)
 	{
 		checkParams(&flag, argc, argv);
+		printParams(flag);
 		createFiles(flag, argc, argv);
 	}
 	else
@@ -38,31 +41,33 @@ void checkParams(short * flag, int argc, char ** argv)
 		{
 			switch(argv[i][1])
 			{
-				case 'c': // Ajouter le constructeur.
+				case 'c': // Retirer le constructeur.
 					*flag += F_CONSTRUCTOR;
-					printf("Ajout de constructeur(s)\n");
 					break; 
-				case 'd': // Ajouter le destructeur.
+				case 'd': // Retirer le destructeur.
 					*flag += F_DESTRUCTOR;
-					printf("Ajout de destructeur(s) : %d\n", F_DESTRUCTOR);
 					break; 
+				case 'i': // Retirer les librairies.
+					*flag += F_LIBRARIES;
 				case 'h': // Afficher l'aide et quitter (seulement si c'est le premier paramètre)
 					if (i == 1)
 					{
 						printf("Ce programme créer un fichier .cpp et un fichier .hpp correspondant au(x) nom(s) passé(s) en argument.\n\nOptions :\
 						\n- \"-c\" : Retire les constructeurs par défaut aux librairies.\
 						\n- \"-d\" : Retire les destructeurs par défaut aux librairies.\
+						\n- \"-i\" : Retire l'inclusion par défaut des librairies.\
 						\n");
 						return;
 					}
 					break;
 				default:
-					printf("Pour afficher l'aide utiliser \"%s -h\"\n", argv[0]);
+					printf("Argument %s non reconnu, pour afficher l'aide utiliser \"%s -h\"\n", argv[i], argv[0]);
 					break;
 			}
 		}
 	}
 }
+
 
 
 void createFiles(short flag, int argc, char ** argv)
@@ -100,11 +105,9 @@ void createFiles(short flag, int argc, char ** argv)
 
 			if (cpp && hpp)
 			{
-				printf("%d\n", flag);
-
 				fprintf(cpp, "#include <%s.hpp>\n", nom);
 				fprintf(hpp, "#ifndef %s\n#define %s\n\n", gardien, gardien);
-				createIncludes(hpp);
+				if (!(flag & F_LIBRARIES)) createIncludes(hpp);
 				fprintf(hpp, "\nclass %s\n{\nprivate:\npublic:\n", nom);
 				if (!(flag & F_CONSTRUCTOR)) createConstructor(hpp, cpp, nom);
 				if (!(flag & F_DESTRUCTOR)) createDestructor(hpp, cpp, nom);
@@ -121,7 +124,6 @@ void createFiles(short flag, int argc, char ** argv)
 void createIncludes(FILE * hpp)
 {
 	char buffer[100];
-	printf("USER : %s\n", getenv("USER"));
 	#ifdef __WIN32__
 		sprintf(buffer, "%s/.libcreator", getenv("USERPROFILE"));
 	#else
@@ -147,4 +149,11 @@ void createDestructor(FILE * hpp, FILE * cpp, char * nom)
 {
 	fprintf(cpp, "\n%s::~%s()\n{\n}\n", nom, nom);
 	fprintf(hpp, "\t~%s();\n", nom);
+}
+
+void printParams(short flag)
+{
+	printf("Constructeur : %s\n", (flag & F_CONSTRUCTOR) ? "OFF" : "ON");
+	printf("Destructeur : %s\n", (flag & F_DESTRUCTOR) ? "OFF" : "ON");
+	printf("Librairies : %s\n", (flag & F_LIBRARIES) ? "OFF" : "ON");
 }

@@ -18,7 +18,6 @@ int main(int argc, char ** argv)
 {
 	short flag = 0;
 
-
 	if (argc > 1)
 	{
 		checkParams(&flag, argc, argv);
@@ -49,6 +48,7 @@ void checkParams(short * flag, int argc, char ** argv)
 					break; 
 				case 'i': // Retirer les librairies.
 					*flag += F_LIBRARIES;
+					break;
 				case 'h': // Afficher l'aide et quitter (seulement si c'est le premier paramètre)
 					if (i == 1)
 					{

@@ -1,0 +1,5 @@
+{
+    "constructor": true,
+    "destructor": true,
+    "includes": ["iostream", "string", "vector"]
+}

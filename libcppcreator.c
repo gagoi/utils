@@ -105,14 +105,14 @@ void createFiles(short flag, int argc, char ** argv)
 
 			if (cpp && hpp) // Si les fichiers sont bien ouverts
 			{
-				fprintf(cpp, "#include <%s.hpp>\n", nom);
+				fprintf(cpp, "#include \"%s.hpp\"\n", nom);
 				fprintf(hpp, "#ifndef %s\n#define %s\n\n", gardien, gardien);
 				if (!(flag & F_LIBRARIES)) createIncludes(hpp);
 				fprintf(hpp, "\nclass %s\n{\nprivate:\npublic:\n", nom);
 				if (!(flag & F_CONSTRUCTOR)) createConstructor(hpp, cpp, nom);
 				if (!(flag & F_DESTRUCTOR)) createDestructor(hpp, cpp, nom);
 
-				fprintf(hpp, "}\n\n#endif\n");
+				fprintf(hpp, "};\n\n#endif\n");
 
 				// Libération des pointeurs
 				fclose(cpp);

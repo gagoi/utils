@@ -136,7 +136,7 @@ void createIncludes(FILE * hpp)
 	FILE * prop = fopen(buffer, "r"); // Ouverture du fichier
 	if (prop) // Si il est ouvert
 		while(fscanf(prop, "%s", buffer) != EOF) // On le parcourt en entier
-			fprintf(hpp, "#include <%s.hpp>\n", buffer); // Pour ajouter le bon include au header
+			fprintf(hpp, "#include <%s>\n", buffer); // Pour ajouter le bon include au header
 }
 
 void createConstructor(FILE * hpp, FILE * cpp, char * nom)

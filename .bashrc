@@ -12,10 +12,20 @@ alias "gic"="git commit -m"
 alias "gip"="git push"
 alias "lcpp"="libcreator"
 alias "zz1"="cd ~/Documents/zz/zz1"
-alias "zz2"="cd ~/Documents/zz/zz2"
+alias "zz2"="cd ~/Documents/zz/ZZ2"
+alias "utils"="cd ~/Documents/zz/utils"
 
-
-
+saveBashRc()
+{
+    local p=pwd
+    utils
+    cd src
+    cp ~/.bashrc ./
+    gia .bashrc
+    gic "Mise à jour du bashrc"
+    gip
+    cd p
+}
 
 # If not running interactively, don't do anything
 case $- in

@@ -24,7 +24,7 @@ saveBashRc()
     gia .bashrc
     gic "Mise à jour du bashrc"
     gip
-    cd p
+    cd $p
 }
 
 # If not running interactively, don't do anything

@@ -14,6 +14,7 @@ alias "lcpp"="libcreator"
 alias "zz1"="cd ~/Documents/zz/zz1"
 alias "zz2"="cd ~/Documents/zz/ZZ2"
 alias "utils"="cd ~/Documents/zz/utils"
+alias "musicbot"="ssh client@192.168.99.1"
 
 saveBashRc()
 {

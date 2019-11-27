@@ -18,7 +18,7 @@ alias "musicbot"="ssh client@192.168.99.1"
 
 saveBashRc()
 {
-    local p=pwd
+    local p=$(pwd)
     utils
     cd src
     cp ~/.bashrc ./
@@ -80,14 +80,24 @@ if [ -n "$force_color_prompt" ]; then
 	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
     else
-	color_prompt=
+	color_prompt=no
     fi
 fi
 
+function vpn()
+{
+    vpn=$(systemctl status openvpn@client | grep "Active:*" | tr -s ' ' | cut -d ' ' -f 3)
+    if [ $vpn = "active" ]; then
+        echo "[Connected]"
+    else
+        echo "[Disconnected]"
+    fi
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[00;31m\][\t]\[\033[00;00m\] \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
+    PS1='$(vpn)\[\033[00;31m\][\t]\[\033[00;00m\] \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='$(vpn)${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 

@@ -3,6 +3,8 @@
 # for examples
 
 export PATH=$HOME/Documents/zz/utils/bin:.:$PATH
+export JAVA_HOME=$HOME/usr/lib/jvm/open-jdk
+
 
 tabs 4
 
@@ -88,9 +90,9 @@ function vpn()
 {
     vpn=$(systemctl status openvpn@client | grep "Active:*" | tr -s ' ' | cut -d ' ' -f 3)
     if [ $vpn = "active" ]; then
-        echo "[Connected]"
+        echo -e '\001\e[92m\002■\001\033[00m\002'
     else
-        echo "[Disconnected]"
+        echo -e '\001\e[91m\002■\001\033[00m\002'
     fi
 }
 

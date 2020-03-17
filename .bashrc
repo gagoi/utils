@@ -2,6 +2,12 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 export PATH=$HOME/bin/exec:$HOME/Documents/zz/utils/bin:$HOME/bin/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin/:.:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
@@ -37,11 +43,6 @@ saveBashRc()
     cd "$p"
 }
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

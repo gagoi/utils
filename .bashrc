@@ -2,12 +2,16 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export PATH=$HOME/Documents/zz/utils/bin:.:$PATH
-export JAVA_HOME=$HOME/usr/lib/jvm/open-jdk
-
+export PATH=$HOME/bin/exec:$HOME/Documents/zz/utils/bin:$HOME/bin/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin/:.:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
 tabs 4
 
+alias "mathieu"="echo '<3'"
+alias "sinan"="echo 'bisous'"
+alias "jeremy"="echo 'Jai faim'"
+
+alias "xmas"="nc 192.168.99.1 1937 < 'xmas_toggle'"
 alias "gis"="git status"
 alias "gia"="git add"
 alias "gic"="git commit -m"
@@ -17,6 +21,9 @@ alias "zz1"="cd ~/Documents/zz/zz1"
 alias "zz2"="cd ~/Documents/zz/ZZ2"
 alias "utils"="cd ~/Documents/zz/utils"
 alias "musicbot"="ssh client@192.168.99.1"
+alias "vpn-connect"="sudo systemctl start openvpn@client"
+alias "vpn-stop"="sudo systemctl stop openvpn@client"
+alias "velo"="ssh ZZ2-projet-velo@172.16.40.88"
 
 saveBashRc()
 {
@@ -158,12 +165,14 @@ fi
 
 # Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
 export COCOS_CONSOLE_ROOT="/home/gagoi/Documents/zz/zz1/Systeme/TP2/cocos2d-x-3.17.1/tools/cocos2d-console/bin"
-export PATH=$COCOS_CONSOLE_ROOT:$PATH
+#export PATH=$COCOS_CONSOLE_ROOT:$PATH
 
 # Add environment variable COCOS_X_ROOT for cocos2d-x
 export COCOS_X_ROOT="/home/gagoi/Documents/zz/zz1/Systeme/TP2"
-export PATH=$COCOS_X_ROOT:$PATH
+#export PATH=$COCOS_X_ROOT:$PATH
 
 # Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
 export COCOS_TEMPLATES_ROOT="/home/gagoi/Documents/zz/zz1/Systeme/TP2/cocos2d-x-3.17.1/templates"
-export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+#export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+
+eval "$(thefuck --alias)"
